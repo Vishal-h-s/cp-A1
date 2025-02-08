@@ -38,8 +38,7 @@ public class AP1_SmallestElement {
         for (int i = 0; i < n; i++) {
             if (front <= rear && window[front] == i - k)
                 front++;
-            // the oldest element in the window. in a well-maintained sliding window (like
-            // ours), we never accumulate multiple expired elements
+/* the oldest element in the window. in a well-maintained sliding window (like ours), we never accumulate multiple expired elements*/
 
             while (front <= rear && nums[window[rear]] >= nums[i])
                 rear--;

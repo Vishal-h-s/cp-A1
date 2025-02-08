@@ -90,40 +90,67 @@ Constraints:
  */
 
 import java.util.Scanner;
-public class SP1_DietPlanPerformance{
-    
-    static int low=0,high=0,points=0;
-    
-    static void point(int sum){
-        if(sum<low) points-=1;
-        else if(sum>high) points+=1;
+
+public class SP1_DietPlanPerformance {
+
+    static int n = 0, k = 0, low = 0, high = 0, points = 0;
+    static int[] calories;
+
+    static void point(int sum) {
+        if (sum < low)
+            points -= 1;
+        else if (sum > high)
+            points += 1;
     }
-    
-    public static void main(String[]args){
-        Scanner sc=new Scanner(System.in);
-        
-        int n=sc.nextInt(),
-        calories[]=new int[n];
-        for(int i=0;i<n;i++) calories[i]=sc.nextInt();
-        
-        int k=sc.nextInt();
-        high=sc.nextInt();
-        low=sc.nextInt(); 
-        
-        int sum=0;
-        
-        for(int i=0;i<=k-1;i++){
-            sum+=calories[i];
+
+    static void solution1() {
+        int sum = 0;
+
+        for (int i = 0; i <= k - 1; i++) {
+            sum += calories[i];
         }
         point(sum);
-        
-        for(int i=k; i<n; i++){
-            sum=0;
-            sum -= calories[i-k];
+
+        for (int i = k; i < n; i++) {
+            sum -= calories[i - k];
             sum += calories[i];
             point(sum);
         }
-        
+    }
+
+    static void solution2() {
+        int i = 0, j = 0, sum = 0;
+        while (j++ < n) {
+            if (j < i + k) {
+                sum += calories[j];
+            } else {
+                point(sum);
+                sum -= calories[i++];
+                sum += calories[j];
+            }
+
+        }
+        point(sum);
+    }
+    /*
+     * point(sum); is only called when j - i == k. finally j==n then j==i+k so
+     * point(sum) not called for last window.
+     */
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        n = sc.nextInt();
+        calories = new int[n];
+        for (int i = 0; i < n; i++)
+            calories[i] = sc.nextInt();
+
+        k = sc.nextInt();
+        low = sc.nextInt();
+        high = sc.nextInt();
+
+        solution2();
+
         System.out.println(points);
         sc.close();
     }
