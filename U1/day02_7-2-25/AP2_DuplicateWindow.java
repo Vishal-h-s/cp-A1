@@ -32,3 +32,30 @@ Sample Input-2:
 Sample Output-2: 
 ----------------
 true */
+
+import java.util.*;
+
+public class AP2_DuplicateWindow {
+    static int n = 0, x = 0, len = 0;
+    static int[] nums, result;
+
+    static void solution(){
+        Map<Integer,Integer> freq=new HashMap<>();
+        for(int i=0;i<x;i++){
+            
+        }
+    }
+    public static void main(String[] args) {
+        Scanner sc=new Scanner(System.in);
+        n=sc.nextInt();
+        nums=new int[n];
+        for(int i=0;i<n;i++) nums[i]=sc.nextInt();
+
+        x=sc.nextInt();
+        len=n-x+1;
+        result=new int[len];
+
+        solution();
+
+        for(int i=0;i<len;i++) System.out.println(result[i]);
+}
