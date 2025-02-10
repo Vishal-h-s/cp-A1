@@ -60,3 +60,57 @@ Sample Output-3:
 ----------------
 3 3 3 3 3
  */
+
+import java.util.*;
+
+public class SP2_DistinctNumbersInEachSubarray {
+
+    static int[] colors, result;
+    static int n = 0, p = 0, len = 0;
+
+    static void solution() {
+        int idx = 0;
+        Map<Integer, Integer> freq = new HashMap<>();
+        int i = 0, j = 0;
+        while (j < n) {
+            int next = colors[j];
+            if (j < i + p) {
+                freq.put(next, freq.getOrDefault(next, 0) + 1);
+            } else {
+                
+
+                result[idx++] = freq.size();
+                int old = colors[i++];
+                if (freq.get(old) == 1)
+                    freq.remove(old);
+                else
+                    freq.put(old, freq.get(old) - 1);
+                freq.put(next, freq.getOrDefault(next, 0) + 1);
+            }
+            j++;
+        }
+        result[idx] = freq.size();
+    }
+
+    static void solution2(){
+        
+    }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        n = sc.nextInt();
+        p = sc.nextInt();
+        len = n - p + 1;
+        result = new int[len];
+        colors = new int[n];
+        for (int i = 0; i < n; i++) {
+            colors[i] = sc.nextInt();
+        }
+
+        solution();
+        for (int i = 0; i < len; i++)
+            System.out.print(result[i] + " ");
+
+        sc.close();
+    }
+}

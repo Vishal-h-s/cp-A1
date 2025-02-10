@@ -120,7 +120,7 @@ public class SP1_DietPlanPerformance {
 
     static void solution2() {
         int i = 0, j = 0, sum = 0;
-        while (j++ < n) {
+        while (j < n) {
             if (j < i + k) {
                 sum += calories[j];
             } else {
@@ -128,7 +128,7 @@ public class SP1_DietPlanPerformance {
                 sum -= calories[i++];
                 sum += calories[j];
             }
-
+            j++;
         }
         point(sum);
     }
