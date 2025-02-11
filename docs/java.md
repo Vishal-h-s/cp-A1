@@ -11,11 +11,11 @@ Packages
 
 # 10-2-25
 ```java
-String  .format("%x",num);
-				"%X"
-				"%h"
-				"%H"
-		.toHexString(num);
+String.format("%x",num);
+			  "%X"
+			  "%h"
+			  "%H"
+	  .toHexString(num);
 								
 ```
 
@@ -39,7 +39,7 @@ only internal methods can modify it like deposit withdraw
 getter is public in order to view the balance
 
 " ASK NOT WHAT THE SYSTEM DOES,
-ASK WHAT IT DOES IT ==TO== " 
+ASK WHAT IT DOES IT ***TO*** " 
 	 - Mr. Tapadia
 
 ###
@@ -79,3 +79,24 @@ class Init{
 
 
 ```
+
+# 11-02-25
+---
+### Calling a Method on a Null Object (NullPointerException)**
+#### **Mistake in the code:**
+```java
+javaobj[0].m(); // Causes NullPointerException
+```
+- `obj[0]` is `null` because we only created an array but didn't initialize the objects.
+#### **Why Does This Cause an Exception?**
+- Since `obj[0]` is `null`, calling `m()` results in:
+```java
+cppException in thread "main" java.lang.NullPointerException
+```
+- Java does not automatically instantiate objects inside an object array.
+#### **Correct Approach:**
+```java
+javaobj[0] = new Three(); // Initialize obj[0]
+obj[0].m(); // Now this works without error
+```
+---
