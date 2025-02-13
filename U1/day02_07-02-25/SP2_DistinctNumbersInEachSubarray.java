@@ -77,8 +77,6 @@ public class SP2_DistinctNumbersInEachSubarray {
             if (j < i + p) {
                 freq.put(next, freq.getOrDefault(next, 0) + 1);
             } else {
-                
-
                 result[idx++] = freq.size();
                 int old = colors[i++];
                 if (freq.get(old) == 1)
@@ -90,10 +88,6 @@ public class SP2_DistinctNumbersInEachSubarray {
             j++;
         }
         result[idx] = freq.size();
-    }
-
-    static void solution2(){
-        
     }
 
     public static void main(String[] args) {

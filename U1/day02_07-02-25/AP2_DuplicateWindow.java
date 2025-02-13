@@ -37,25 +37,50 @@ import java.util.*;
 
 public class AP2_DuplicateWindow {
     static int n = 0, x = 0, len = 0;
-    static int[] nums, result;
+    static int[] nums;
+    static boolean result = false;
 
-    static void solution(){
-        Map<Integer,Integer> freq=new HashMap<>();
-        for(int i=0;i<x;i++){
+    static void solution() {
+        // Map<Integer, Integer> freq = new HashMap<>();
+        Set<Integer> set=new HashSet<>();
+        for (int i = 0; i < n; i++) {
+            // int iter = 0;
             
+            if (i >= x) {
+                // for (Map.Entry<Integer, Integer> entry : freq.entrySet()) {
+                //     if (entry.getValue() > 1) {
+                //         result = true;
+                //         break;
+                //     }
+                //     iter++;
+                // }
+                // System.out.println(i + " " + iter);
+                int prev = nums[i - x];
+                set.remove(prev);
+            }
+            int curr = nums[i];
+
+            if(set.contains(curr)) {
+                result=true;
+                break;
+            }
+
+            set.add(curr);
         }
     }
-    public static void main(String[] args) {
-        Scanner sc=new Scanner(System.in);
-        n=sc.nextInt();
-        nums=new int[n];
-        for(int i=0;i<n;i++) nums[i]=sc.nextInt();
 
-        x=sc.nextInt();
-        len=n-x+1;
-        result=new int[len];
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        n = sc.nextInt();
+        nums = new int[n];
+        for (int i = 0; i < n; i++)
+            nums[i] = sc.nextInt();
+
+        x = sc.nextInt();
 
         solution();
 
-        for(int i=0;i<len;i++) System.out.println(result[i]);
+        System.out.println(result);
+        sc.close();
+    }
 }

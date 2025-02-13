@@ -9,7 +9,7 @@ However s1.kankat returns in your object if not assigned will have no reference
 
 Packages
 
-# 10-2-25
+# day3 10-2-25
 ```java
 String.format("%x",num);
 			  "%X"
@@ -80,7 +80,7 @@ class Init{
 
 ```
 
-# 11-02-25
+# day4 11-02-25
 ---
 ### Calling a Method on a Null Object (NullPointerException)**
 #### **Mistake in the code:**
@@ -100,3 +100,10 @@ javaobj[0] = new Three(); // Initialize obj[0]
 obj[0].m(); // Now this works without error
 ```
 ---
+End of chapter 1
+
+# footnotes
+
+Static methods can access only static members (because they don’t belong to any object).
+Non-static (instance) methods can access both static and non-static members (because they have an object reference).
+To access non-static members inside a static method, create an object first.
