@@ -63,3 +63,35 @@ Constraints:
 -> blocks[i] is either 'W' or 'B'.
 -> 1 <= k <= n
  */
+
+import java.util.*;
+
+public class AP7_ReColor {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        char[] blocks = sc.next().toCharArray();
+        int size = sc.nextInt();
+        // int currBlackCount = 0;
+        int noOperations = Integer.MAX_VALUE, currNoOperations = 0;
+
+        for (int idx = 0; idx < blocks.length; idx++) {
+            char currBlock = blocks[idx];
+            if (currBlock == 'W') {
+                currNoOperations++;
+            }
+            if (idx >= size) {
+                char prevBlock = blocks[idx - size];
+                if (prevBlock == 'W') {
+                    currNoOperations--;
+                }
+            }
+            if (currNoOperations < noOperations) {
+                noOperations = currNoOperations;
+            }
+        }
+        if (noOperations == Integer.MIN_VALUE)
+            noOperations = 0;
+        System.out.println(noOperations);
+        sc.close();
+    }
+}

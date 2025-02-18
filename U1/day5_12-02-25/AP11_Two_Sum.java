@@ -90,6 +90,7 @@ public class AP11_Two_Sum{
             else j--;
         }
         System.out.println(res);
+        sc.close();
     }
 }
 

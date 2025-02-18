@@ -63,4 +63,33 @@ Boat 3: (4)
 Boat 4: (5)
 Total boats required: 4.
 
- */
+*/
+
+import java.util.*;
+
+public class AP5_Boat {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int noPeople = sc.nextInt();
+        int[] weights = new int[noPeople];
+        for (int idx = -0; idx < noPeople; idx++)
+            weights[idx] = sc.nextInt();
+        int limit = sc.nextInt();
+
+        Arrays.sort(weights);
+        int left = 0, right = noPeople - 1, boats = 0;
+        while (left <= right) {
+            if (weights[left] + weights[right] <= limit) {
+                left++;
+                right--;//together
+                boats++;
+            } else {
+                right--;//alone
+                boats++;
+            }
+        }
+
+        System.out.println(boats);
+        sc.close();
+    }
+}
