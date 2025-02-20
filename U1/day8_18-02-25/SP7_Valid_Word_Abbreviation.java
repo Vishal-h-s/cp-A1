@@ -44,11 +44,11 @@ import java.util.*;
 
 public class SP7_Valid_Word_Abbreviation {
     static char[] abbreviation, word;
-    
-    static boolean testValidity(){
+
+    static boolean testValidity() {
         int i = 0, j = 0;
         boolean isValid = false;
-        while (i < word.length && j<abbreviation.length) {
+        while (i < word.length && j < abbreviation.length) {
             if (abbreviation[j] == '0') {
                 isValid = false;
                 break;
@@ -57,28 +57,29 @@ public class SP7_Valid_Word_Abbreviation {
                 i++;
                 j++;
                 continue;
-            }
-            else{
-                if(!Character.isDigit(abbreviation[j])){
-                    isValid=false;
+            } else {
+                if (!Character.isDigit(abbreviation[j])) {
+                    isValid = false;
                     break;
                 }
                 StringBuilder num = new StringBuilder('0');
-                while (j<abbreviation.length && Character.isDigit(abbreviation[j])) {
+                while (j < abbreviation.length && Character.isDigit(abbreviation[j])) {
                     num.append(abbreviation[j++]);
                 }
                 i += Integer.parseInt(num.toString());
             }
         }
-        if(i==word.length && j==abbreviation.length) isValid=true;
+        if (i == word.length && j == abbreviation.length)
+            isValid = true;
         return isValid;
     }
+
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         word = sc.next().toCharArray();
         abbreviation = sc.next().toCharArray();
-        
+
         System.out.println(testValidity());
         sc.close();
     }
-}}
+}

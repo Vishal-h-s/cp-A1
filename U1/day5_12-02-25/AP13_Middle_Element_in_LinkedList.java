@@ -59,17 +59,17 @@ class Solution {
 
 		// Step 1: Find Middle (slow = mid or mid.next if odd length)
 		ListNode slow = head, fast = head;
-		// ListNode mid= null;
+		ListNode mid= null;
 		while (fast != null && fast.next != null) {
-			// mid = slow;
+			mid = slow;
 			slow = slow.next;
 			fast = fast.next.next;
 		}
-		// if (fast != null) {
-		// mid = slow;
-		// slow = slow.next;
-		// }
-		return slow;
+		if (fast != null) {
+		mid = slow;
+		slow = slow.next;
+		}
+		return mid;
 	}
 
 	void print(ListNode head) {
@@ -83,6 +83,33 @@ class Solution {
 }
 
 public class AP13_Middle_Element_in_LinkedList {
+	public ListNode findMid(ListNode head) {
+		if (head == null || head.next == null)
+			return head;
+
+		// Step 1: Find Middle (slow = mid or mid.next if odd length)
+		ListNode slow = head, fast = head;
+		ListNode mid= null;
+		while (fast != null && fast.next != null) {
+			mid = slow;
+			slow = slow.next;
+			fast = fast.next.next;
+		}
+		if (fast != null) {
+		mid = slow;
+		slow = slow.next;
+		}
+		return mid;
+	}
+
+	void print(ListNode head) {
+		ListNode temp = head;
+		while (temp != null) {
+			System.out.print(temp.val + "->");
+			temp = temp.next;
+		}
+		System.out.println();
+	}
 	public static void main(String[] args) {
 
 		Scanner sc = new Scanner(System.in);
@@ -102,9 +129,8 @@ public class AP13_Middle_Element_in_LinkedList {
 			}
 		}
 
-		Solution s = new Solution();
 
-		System.out.println(s.findMid(head).val);
+		System.out.println(findMid(head).val);
 
 		sc.close();
 	}
