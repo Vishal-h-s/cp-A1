@@ -1,3 +1,4 @@
+
 /*
  * Mr.Sathya is playing with numbers he converts the decimal to binary 
 and try to find number of positions at which the corresponding
@@ -39,6 +40,24 @@ Sample Output-2:
 ----------------
 4
  */
-public class AP23_Hamming_Distance {
-    
+import java.util.*;
+public class AP23_Hamming_Distance{
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int len = sc.nextInt();
+        int[] nums = new int[len];
+        for (int idx = 0; idx < len; idx++)
+            nums[idx] = sc.nextInt();
+        int totalDistance = 0;
+        for (int idx = 0; idx < len; idx++)
+            for (int jdx = idx+1; jdx < len; jdx++) {
+                int xor = nums[idx] ^ nums[jdx];
+                while (xor > 0) {
+                    totalDistance += (xor & 1);
+                    xor >>= 1;
+                }
+            }
+        System.out.println(totalDistance);
+        sc.close();
+    }
 }
