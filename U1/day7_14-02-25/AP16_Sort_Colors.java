@@ -42,3 +42,44 @@ Sample Output-2:
 0 1 2
 
  */
+
+ 
+import java.util.*;
+public class AP16_Sort_Colors{
+    static int len;
+    static int[] nums;
+
+    static void swap(int left, int right){
+        nums[left]=nums[left]^nums[right];
+        nums[right]=nums[left]^nums[right];
+        nums[left]=nums[left]^nums[right];
+    }
+    static void solution(){
+        int left=0, right= len-1;
+        int idx=0;
+        while(idx<right){
+            if(nums[idx]==0){
+                swap(left, idx);
+                left++; idx++;
+            }
+            else if(idx==1){
+                idx++;
+            }
+            else{
+                swap(right, idx);
+                right--;
+            }
+        }
+    }
+
+    public static void main(String[] args) {
+        Scanner sc=new Scanner(System.in);
+        len=sc.nextInt();
+        nums=new int[len];
+        for(int idx=0;idx<len;idx++) nums[idx]=sc.nextInt();
+        solution();
+        for(int idx=0;idx<len;idx++)
+        System.out.print(nums[idx]+" ");
+        sc.close();
+    }
+}

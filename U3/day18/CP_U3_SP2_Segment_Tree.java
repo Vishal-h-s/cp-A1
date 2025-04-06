@@ -81,16 +81,27 @@ public class CP_U3_SP2_Segment_Tree {
         return result;
     }
 
-    static int[] inclusiveRangeExtremum(TreeNode node, int startIndex, int endIndex){
-        int[] result=new int[2];
-        if(startIndex == node.leftBound && endIndex==node.rightBound){
-            result[0]=node.smallest;result[1]=node.largest;
-        }else{
-            int treeMid=
+    static int[] inclusiveRangeExtremum(TreeNode node, int startIndex, int endIndex) {
+        int[] result = new int[2];
+        if (startIndex == node.leftBound && endIndex == node.rightBound) {
+            result[0] = node.smallest;
+            result[1] = node.largest;
+        } else {
+            int treeMid = node.leftBound + (node.rightBound - node.leftBound) / 2;
+            if (treeMid >= endIndex) {
+                result = inclusiveRangeExtremum(node.left, startIndex, treeMid);
+            } else if (treeMid < startIndex) {
+                result = inclusiveRangeExtremum(node.right, treeMid + 1, endIndex);
+            } else {
+                int[] leftResult = inclusiveRangeExtremum(node.left, startIndex, treeMid),
+                        rightResult = inclusiveRangeExtremum(node.right, treeMid + 1, endIndex);
+                result[0] = Math.min(leftResult[0], rightResult[0]);
+                result[1] = Math.max(leftResult[1], rightResult[1]);
+            }
         }
-
         return result;
     }
+
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         len = sc.nextInt();

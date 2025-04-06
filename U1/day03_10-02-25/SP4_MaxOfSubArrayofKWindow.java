@@ -34,6 +34,41 @@ Maximum of subarray {5, 2, 3} is 5
 Maximum of subarray {2, 3, 6} is 6
 */
 
+import java.util.*;
+
 public class SP4_MaxOfSubArrayofKWindow {
+
+    static int len, windowSize;
+    static int[] nums, result;
     
+    static void solution() {
+        Deque<Integer> window = new LinkedList<>();
+        int index = 0;
+        for (int idx = 0; idx < len; idx++) {
+            if (!window.isEmpty() && window.peekFirst() == idx - windowSize ) {
+                window.pollFirst();
+            }
+            while (!window.isEmpty() && nums[window.peekLast()] < nums[idx]) {
+                window.pollLast();
+            }
+            window.offerLast(idx);
+            if (idx >= windowSize - 1) {
+                result[index++] = nums[window.peekFirst()];
+            }
+        }
+    }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        len = sc.nextInt();
+        windowSize = sc.nextInt();
+        nums = new int[len];
+        result = new int[len - windowSize + 1];
+        for (int idx = 0; idx < len; idx++) {
+            nums[idx] = sc.nextInt();
+        }
+        solution();
+        for(int num: result) System.out.print(num+" ");
+        sc.close();
+    }
 }

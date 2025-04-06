@@ -89,6 +89,7 @@ Constraints:
 3) 0 <= lower <= upper
  */
 
+ 
 import java.util.Scanner;
 
 public class SP1_DietPlanPerformance {
@@ -122,13 +123,12 @@ public class SP1_DietPlanPerformance {
         int i = 0, j = 0, sum = 0;
         while (j < n) {
             if (j < i + k) {
-                sum += calories[j];
+                sum += calories[j++];
             } else {
                 point(sum);
                 sum -= calories[i++];
-                sum += calories[j];
+                sum += calories[j++];
             }
-            j++;
         }
         point(sum);
     }

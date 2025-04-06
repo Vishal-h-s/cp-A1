@@ -66,13 +66,14 @@ import java.util.*;
 public class SP2_DistinctNumbersInEachSubarray {
 
     static int[] colors, result;
-    static int n = 0, p = 0, len = 0;
+    static int n = 0, p = 0;
 
     static void solution() {
         int idx = 0;
         Map<Integer, Integer> freq = new HashMap<>();
         int i = 0, j = 0;
         while (j < n) {
+            // && i < len
             int next = colors[j];
             if (j < i + p) {
                 freq.put(next, freq.getOrDefault(next, 0) + 1);
@@ -94,16 +95,15 @@ public class SP2_DistinctNumbersInEachSubarray {
         Scanner sc = new Scanner(System.in);
         n = sc.nextInt();
         p = sc.nextInt();
-        len = n - p + 1;
-        result = new int[len];
+        result = new int[n-p+1];
         colors = new int[n];
         for (int i = 0; i < n; i++) {
             colors[i] = sc.nextInt();
         }
 
         solution();
-        for (int i = 0; i < len; i++)
-            System.out.print(result[i] + " ");
+        for (int item: result)
+            System.out.print(item + " ");
 
         sc.close();
     }

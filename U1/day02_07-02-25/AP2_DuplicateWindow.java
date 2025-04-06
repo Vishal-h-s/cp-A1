@@ -59,12 +59,10 @@ public class AP2_DuplicateWindow {
                 set.remove(prev);
             }
             int curr = nums[i];
-
             if(set.contains(curr)) {
                 result=true;
                 break;
             }
-
             set.add(curr);
         }
     }

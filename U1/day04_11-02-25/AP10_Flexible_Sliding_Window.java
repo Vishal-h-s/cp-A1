@@ -66,10 +66,12 @@ public class AP10_Flexible_Sliding_Window {
 
         int left = 0, count = 0, totalTime = 0;
         for (int right = 0; right < noBooks; right++) {
+            
             totalTime += times[right];
             while (totalTime > k) {
                 totalTime -= times[left++];
             }
+
             int currCount = right - left + 1;
             if (count < currCount) {
                 count = currCount;

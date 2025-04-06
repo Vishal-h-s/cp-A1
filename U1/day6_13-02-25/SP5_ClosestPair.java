@@ -65,26 +65,25 @@ import java.util.*;
 
 public class SP5_ClosestPair {
     static int[] a, b;
-    static int n1, n2, target;
-    static int[] result = new int[2];
+    static int n1, n2, target, result1, result2;
 
     static void solution() {
         int i = 0, j = n2 - 1;
-        int min = Integer.MAX_VALUE;
+        int min = Integer.MAX_VALUE, diff;
         while (i < n1 && j >= 0) {
             int sum = a[i] + b[j];
 
             if (sum == target) {
-                result[0] = a[i];
-                result[1] = b[j];
+                result1 = a[i];
+                result2 = b[j];
                 break;
             }
 
-            int diff = Math.abs(sum - target);
+            diff = Math.abs(sum - target);
 
             if (diff < min) {
-                result[0] = a[i];
-                result[1] = b[j];
+                result1 = a[i];
+                result2 = b[j];
                 min = diff;
             }
             if (sum < target) {
@@ -115,7 +114,7 @@ public class SP5_ClosestPair {
         target = sc.nextInt();
         solution();
 
-        System.out.println(result[0] + "," + result[1]);
+        System.out.println(result1 + "," + result2);
         sc.close();
     }
 }

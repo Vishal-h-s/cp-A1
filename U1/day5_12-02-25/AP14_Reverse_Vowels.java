@@ -23,27 +23,6 @@ Kashivmomerael
 
  */
 
- 
- 
-import java.util.*;
-
-class ListNode {
-	String val;
-	ListNode next;
-
-	ListNode() {
-	}
-
-	ListNode(String val) {
-		this.val = val;
-	}
-
-	ListNode(String val, ListNode next) {
-		this.val = val;
-		this.next = next;
-	}
-}
-
 /**
  * Definition for singly-linked list.
  * public class ListNode {
@@ -54,91 +33,96 @@ class ListNode {
  * ListNode(String val, ListNode next) { this.val = val; this.next = next; }
  * }
  */
+import java.util.*;
 
+class ListNode {
+	char val;
+	ListNode next;
 
+	ListNode() {
+	}
+
+	ListNode(char val) {
+		this.val = val;
+	}
+
+	ListNode(char val, ListNode next) {
+		this.val = val;
+		this.next = next;
+	}
+}
 
 public class AP14_Reverse_Vowels {
 
-
-	static ListNode reverse(ListNode slow){
-		ListNode prev = null, curr = slow, temp = null;
+	static ListNode reverse(ListNode slow) {
+		ListNode prev = null, curr = slow, tempNext = null;
 		while (curr != null) {
-			temp = curr.next;
+			tempNext = curr.next;
 			curr.next = prev;
 			prev = curr;
-			curr = temp;
+			curr = tempNext;
 		}
 		return prev;
 	}
 
-	static boolean isVowel(String c){
-		String[] vowels={"A","E","I","O","U"};
-		for(String x:vowels){
-			if(c.contains(x)){
-
-				
-			}
-		}
+	static boolean isVowel(char c) {
+		return "AEIOU".indexOf(Character.toUpperCase(c)) != -1;
 	}
+
 	static void reverseVowels(ListNode head) {
 		if (head == null || head.next == null)
-			return ;
+			return;
 
 		// Step 1: Find Middle (slow = mid or mid.next if odd length)
 		ListNode slow = head, fast = head;
-		ListNode mid=null;
+		ListNode mid = null;
 		while (fast != null && fast.next != null) {
 			mid = slow;
 			slow = slow.next;
 			fast = fast.next.next;
 		}
-		// if (fast != null) {
-		// 	mid = slow;
-		// 	slow = slow.next;
-		// }
 
 		// Step 2: Reverse Second Half
-		ListNode prev=reverse(slow);
-		
-		// mid.next = prev;
+		ListNode prev = reverse(slow);
 
-		ListNode a = head, b = prev;
-		while (b != null) {
-			boolean ais=isVowel(a.val), bis=isVowel(b.val);
-			if(ais && bis) {
-				String temp=a.val;
-				a.val=b.val;
-				b.val=temp;
+		ListNode first = head, second = prev;
+		while (first != null && second != null) {
+			boolean firstis = isVowel(first.val), secondis = isVowel(second.val);
+			if (firstis && secondis) {
+				first.val = (char) (first.val ^ second.val);
+				second.val = (char) (first.val ^ second.val);
+				first.val = (char) (first.val ^ second.val);
 
-				a=a.next;
-				b=b.next
+				first = first.next;
+				second = second.next;
+			} else if (firstis) {
+				second = second.next;
+			} else {
+				first = first.next;
 			}
-			else if(ais) b=b.next;
-			else a=a.next;
 		}
 
-		prev=reverse(slow);
-		mid.next=prev;
-		
+		// Step 3: Restore the second half to its original order
+		prev = reverse(prev);
+		if (mid != null) {
+			mid.next = prev;
+		}
 	}
 
 	static void print(ListNode head) {
 		ListNode temp = head;
 		while (temp != null) {
-			System.out.print(temp.val + "->");
+			System.out.print(temp.val);
 			temp = temp.next;
 		}
 		System.out.println();
 	}
 
-
-
 	public static void main(String[] args) {
-
 		Scanner sc = new Scanner(System.in);
-		String[] in=sc.nextLine().split("");
+		char[] in = sc.nextLine().toCharArray();
 		ListNode head = null, tail = null;
-		for (String x : in) {
+		for (char x : in) {
 			ListNode n = new ListNode(x);
 			if (head == null) {
 				head = n;
@@ -148,11 +132,9 @@ public class AP14_Reverse_Vowels {
 				tail = n;
 			}
 		}
-
-		Solution s = new Solution();
-		
-		System.out.println(s.isPalindrome(head));
-		
+		if (head.next != null)
+			reverseVowels(head);
+		print(head);
 
 		sc.close();
 	}

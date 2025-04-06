@@ -63,7 +63,6 @@ Constraints:
 -> blocks[i] is either 'W' or 'B'.
 -> 1 <= k <= n
  */
-
 import java.util.*;
 
 public class AP7_ReColor {
@@ -71,26 +70,34 @@ public class AP7_ReColor {
         Scanner sc = new Scanner(System.in);
         char[] blocks = sc.next().toCharArray();
         int size = sc.nextInt();
-        // int currBlackCount = 0;
-        int noOperations = Integer.MAX_VALUE, currNoOperations = 0;
 
-        for (int idx = 0; idx < blocks.length; idx++) {
-            char currBlock = blocks[idx];
-            if (currBlock == 'W') {
+        int noOperations = Integer.MAX_VALUE; // Minimum operations required
+        int currNoOperations = 0; // Current operations for the sliding window
+
+        // Initialize the first window of size `size`
+        for (int idx = 0; idx < size; idx++) {
+            if (blocks[idx] == 'W') {
                 currNoOperations++;
             }
-            if (idx >= size) {
-                char prevBlock = blocks[idx - size];
-                if (prevBlock == 'W') {
-                    currNoOperations--;
-                }
-            }
-            if (currNoOperations < noOperations) {
-                noOperations = currNoOperations;
-            }
         }
-        if (noOperations == Integer.MIN_VALUE)
-            noOperations = 0;
+        noOperations = currNoOperations;
+
+        // Slide the window across the array
+        for (int idx = size; idx < blocks.length; idx++) {
+            // Add the new block to the window
+            if (blocks[idx] == 'W') {
+                currNoOperations++;
+            }
+
+            // Remove the block that is sliding out of the window
+            if (blocks[idx - size] == 'W') {
+                currNoOperations--;
+            }
+
+            // Update the minimum operations required
+            noOperations = Math.min(noOperations, currNoOperations);
+        }
+
         System.out.println(noOperations);
         sc.close();
     }

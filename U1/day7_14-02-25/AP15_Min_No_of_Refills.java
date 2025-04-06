@@ -65,3 +65,59 @@ Both Andy and Berry cannot serve their next guests, so both refill.
 Total refills = 2.
 
  */
+
+import java.util.*;
+public class AP15_Min_No_of_Refills{
+    static int len, capa,capb, result;
+    static int[] nums;
+
+    static void solution(){
+        int left=0, right=len-1, sizea=capa,sizeb=capb;
+        result=0;
+        while(left<right){
+            if(sizea>=nums[left]){
+                sizea-=nums[left];
+                left++;
+            }else{
+                result++;
+                sizea=capa;
+            }
+            if(sizeb>=nums[right]){
+                sizeb-=nums[right];
+                right--;
+            }else{
+                result++;
+                sizeb=capb;
+            }
+        }
+        if(left==right){
+            if(sizea>=sizeb){
+                if(sizea>=nums[left]){
+                    sizea-=nums[left];
+                }else{
+                    result++;
+                    sizea=capa;
+                }
+            }
+            else{
+                if(sizeb>=nums[left]){
+                    sizeb-=nums[left];
+                }else{
+                    result++;
+                    sizeb=capb;
+                }
+            }
+        }
+    }
+
+    public static void main(String[] args) {
+        Scanner sc=new Scanner(System.in);
+        len=sc.nextInt();
+        nums=new int[len];
+        for(int idx=0;idx<len;idx++) nums[idx]=sc.nextInt();
+        capa=sc.nextInt();capb=sc.nextInt();
+        solution();
+        System.out.println(result);
+        sc.close();
+    }
+}

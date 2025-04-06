@@ -100,9 +100,9 @@ public class AP29_SquaresOfSortedArray {
         Scanner sc = new Scanner(System.in);
         len = sc.nextInt();
         nums = new int[len];
+        res = new int[len];
         for (int idx = 0; idx < len; idx++)
             nums[idx] = sc.nextInt();
-        res = new int[len];
 
         method1();
         // method2();

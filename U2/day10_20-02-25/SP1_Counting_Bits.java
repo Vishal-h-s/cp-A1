@@ -59,5 +59,6 @@ public class SP1_Counting_Bits {
             }
         }
         System.out.println(Arrays.toString(result));
+        sc.close();
     }
 }

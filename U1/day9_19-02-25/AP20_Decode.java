@@ -1,5 +1,5 @@
 /*
- * Mr Bond is a spy and he is working on a mission to solve that mission he needs 
+* Mr Bond is a spy and he is working on a mission to solve that mission he needs 
 list of numbers which are password to a secret locker, he got a secret code from his informer 
 which consists of a circular array code of length of n and a key k.
 
@@ -69,8 +69,5 @@ n == code.length
 1 <= code[i] <= 100
 -(n - 1) <= k <= n - 1
  */
-package U1.day9_19-02-25;
 
-public class AP20_Decode {
-    
-}
+

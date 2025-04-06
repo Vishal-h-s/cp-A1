@@ -53,7 +53,7 @@ public class SP7_Valid_Word_Abbreviation {
                 isValid = false;
                 break;
             }
-            if (word[i] == abbreviation[j]) {
+            else if (word[i] == abbreviation[j]) {
                 i++;
                 j++;
                 continue;
@@ -62,7 +62,7 @@ public class SP7_Valid_Word_Abbreviation {
                     isValid = false;
                     break;
                 }
-                StringBuilder num = new StringBuilder('0');
+                StringBuilder num = new StringBuilder();
                 while (j < abbreviation.length && Character.isDigit(abbreviation[j])) {
                     num.append(abbreviation[j++]);
                 }
