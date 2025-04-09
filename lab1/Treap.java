@@ -1,12 +1,25 @@
+/*
+ * Given an integer array nums, return the number of reverse pairs in the array. A reverse pair is a 
+pair (i, j) where 0 <= i < j < nums.length and nums[i] > 2 * nums[j]. 
+Example 1: 
+Input: nums = [1,3,2,3,1] 
+Output: 2 
+Example 2: 
+Input: nums = [2,4,3,5,1] 
+Output: 3 
+Constraints: 
+1 <= nums.length <= 5 * 104 -2^31 <= nums[i] <= 2^31 – 1
+ */
 import java.util.Random;
 
 class Node {
-    int key, priority;
+    int key, priority, count; // `count` stores the size of the subtree rooted at this node
     Node left, right;
 
     public Node(int key) {
         this.key = key;
         this.priority = new Random().nextInt(); // Assign a random priority
+        this.count = 1; // Initially, the size of the subtree is 1 (the node itself)
         this.left = null;
         this.right = null;
     }
@@ -16,28 +29,47 @@ public class Treap {
     private Node root;
 
     // Rotate right
-private Node rotateRight(Node parent) {
-    Node child = parent.left;
-    Node temp = child.right;
+    private Node rotateRight(Node parent) {
+        Node child = parent.left;
+        Node temp = child.right;
 
-    // Perform rotation
-    child.right = parent;
-    parent.left = temp;
+        // Perform rotation
+        child.right = parent;
+        parent.left = temp;
 
-    return child;
-}
+        // Update subtree sizes
+        updateCount(parent);
+        updateCount(child);
 
-// Rotate left
-private Node rotateLeft(Node parent) {
-    Node child = parent.right;
-    Node temp = child.left;
+        return child;
+    }
 
-    // Perform rotation
-    child.left = parent;
-    parent.right = temp;
+    // Rotate left
+    private Node rotateLeft(Node parent) {
+        Node child = parent.right;
+        Node temp = child.left;
 
-    return child;
-}
+        // Perform rotation
+        child.left = parent;
+        parent.right = temp;
+
+        // Update subtree sizes
+        updateCount(parent);
+        updateCount(child);
+
+        return child;
+    }
+
+    // Update the size of the subtree rooted at a node
+    private void updateCount(Node node) {
+        if (node != null) {
+            node.count = 1 + getCount(node.left) + getCount(node.right);
+        }
+    }
+
+    private int getCount(Node node) {
+        return node == null ? 0 : node.count;
+    }
 
     // Insert a key into the Treap
     public Node insert(Node node, int key) {
@@ -53,7 +85,7 @@ private Node rotateLeft(Node parent) {
             if (node.left.priority > node.priority) {
                 node = rotateRight(node);
             }
-        } else if (key > node.key) {
+        } else {
             node.right = insert(node.right, key);
 
             // Heap property violation
@@ -62,53 +94,24 @@ private Node rotateLeft(Node parent) {
             }
         }
 
-        return node;
-    }
-
-    // Delete a key from the Treap
-    public Node delete(Node node, int key) {
-        if (node == null) {
-            return null;
-        }
-
-        // BST deletion
-        if (key < node.key) {
-            node.left = delete(node.left, key);
-        } else if (key > node.key) {
-            node.right = delete(node.right, key);
-        } else {
-            // Node to be deleted found
-            if (node.left == null) {
-                return node.right;
-            } else if (node.right == null) {
-                return node.left;
-            }
-
-            // Rotate to maintain heap property
-            if (node.left.priority > node.right.priority) {
-                node = rotateRight(node);
-                node.right = delete(node.right, key);
-            } else {
-                node = rotateLeft(node);
-                node.left = delete(node.left, key);
-            }
-        }
+        // Update the size of the subtree
+        updateCount(node);
 
         return node;
     }
 
-    // Search for a key in the Treap
-    public boolean search(Node node, int key) {
+    // Query the Treap to count elements greater than a given value
+    public int countGreater(Node node, long value) {
         if (node == null) {
-            return false;
+            return 0;
         }
 
-        if (key == node.key) {
-            return true;
-        } else if (key < node.key) {
-            return search(node.left, key);
+        if (node.key > value) {
+            // Count this node and all nodes in the right subtree
+            return 1 + getCount(node.right) + countGreater(node.left, value);
         } else {
-            return search(node.right, key);
+            // Skip this node and move to the right subtree
+            return countGreater(node.right, value);
         }
     }
 
@@ -117,55 +120,36 @@ private Node rotateLeft(Node parent) {
         root = insert(root, key);
     }
 
-    // Wrapper for delete
-    public void delete(int key) {
-        root = delete(root, key);
+    // Wrapper for countGreater
+    public int countGreater(long value) {
+        return countGreater(root, value);
     }
 
-    // Wrapper for search
-    public boolean search(int key) {
-        return search(root, key);
-    }
+    // Solve the reverse pairs problem
+    public int reversePairs(int[] nums) {
+        int count = 0;
 
-    // In-order traversal
-    public void inOrder(Node node) {
-        if (node != null) {
-            inOrder(node.left);
-            System.out.println("Key: " + node.key + ", Priority: " + node.priority);
-            inOrder(node.right);
+        // Iterate through the array from right to left
+        for (int i = nums.length - 1; i >= 0; i--) {
+            // Count elements greater than 2 * nums[i]
+            count += countGreater(2L * nums[i]);
+
+            // Insert nums[i] into the Treap
+            insert(nums[i]);
         }
-    }
 
-    public void printInOrder() {
-        inOrder(root);
+        return count;
     }
 
     public static void main(String[] args) {
         Treap treap = new Treap();
 
-        // Insert keys
-        treap.insert(50);
-        treap.insert(30);
-        treap.insert(20);
-        treap.insert(40);
-        treap.insert(70);
-        treap.insert(60);
-        treap.insert(80);
+        // Example 1
+        int[] nums1 = {1, 3, 2, 3, 1};
+        System.out.println("Output: " + treap.reversePairs(nums1)); // Output: 2
 
-        // Print in-order traversal
-        System.out.println("In-order traversal of the Treap:");
-        treap.printInOrder();
-
-        // Search for a key
-        System.out.println("\nSearch for key 40: " + treap.search(40));
-        System.out.println("Search for key 90: " + treap.search(90));
-
-        // Delete a key
-        System.out.println("\nDeleting key 50...");
-        treap.delete(50);
-
-        // Print in-order traversal after deletion
-        System.out.println("In-order traversal after deletion:");
-        treap.printInOrder();
+        // Example 2
+        int[] nums2 = {2, 4, 3, 5, 1};
+        System.out.println("Output: " + treap.reversePairs(nums2)); // Output: 3
     }
 }
