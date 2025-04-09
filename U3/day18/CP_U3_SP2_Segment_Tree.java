@@ -1,131 +1,121 @@
-/*
- * 
- * 
- */
+import java.util.*;
 
-import java.util.Arrays;
-import java.util.Scanner;
+class Node {
+    int max, min, sum, lb, rb;
+    Node left, right;
 
-class TreeNode {
-    int largest, smallest, summation, leftBound, rightBound;
-    TreeNode left, right;
-
-    TreeNode() {
+    Node() {
         left = null;
         right = null;
+        sum = 0;
+        min = 0;
+        max = 0;
     }
 
-    TreeNode(int lb, int rb) {
+    Node(int lb, int rb) {
         left = null;
         right = null;
-        leftBound = lb;
-        rightBound = rb;
-        summation = 0;
-        // smallest = Integer.MAX_VALUE;
-        // largest = Integer.MIN_VALUE;
-        smallest = 0;
-        largest = 0;
+        this.lb = lb;
+        this.rb = rb;
+        sum = 0;
+        min = 0;
+        max = 0;
     }
 }
 
 public class CP_U3_SP2_Segment_Tree {
-    static int len;
-    static int[] nums;
-    static TreeNode tree;
+    static int n;
+    static int[] arr;
+    static Node root;
 
-    static void printTree(TreeNode node) {
+    static void print(Node node) {
         if (node == null)
             return;
-        else {
-            printTree(node.left);
-            printTree(node.right);
-            System.out.println(
-                    "leftBound " + node.leftBound + "rightBound " + node.rightBound + "sum " + node.summation + "min "
-                            + node.smallest + "max " + node.largest);
-        }
+        print(node.left);
+        print(node.right);
+        System.out.println(
+                "lb " + node.lb + " rb " + node.rb + " sum " + node.sum + " min " + node.min + " max " + node.max);
     }
 
-    static TreeNode populateTree(int leftBound, int rightBound) {
-        TreeNode node = new TreeNode(leftBound, rightBound);
-        if (leftBound == rightBound) {
-            node.summation = node.smallest = node.largest = nums[leftBound];
+    static Node build(int lb, int rb) {
+        Node node = new Node(lb, rb);
+        if (lb == rb) {
+            node.sum = node.min = node.max = arr[lb];
         } else {
-            int mid = leftBound + (rightBound - leftBound) / 2;
-            TreeNode leftNode = populateTree(leftBound, mid);
-            TreeNode rightNode = populateTree(mid + 1, rightBound);
-            // head recursion
-            node.left = leftNode;
-            node.right = rightNode;
+            int mid = lb + (rb - lb) / 2;
+            Node left = build(lb, mid);
+            Node right = build(mid + 1, rb);
+            node.left = left;
+            node.right = right;
 
-            node.summation = leftNode.summation + rightNode.summation;
-            node.smallest = Math.min(leftNode.smallest, rightNode.smallest);
-            node.largest = Math.max(leftNode.largest, rightNode.largest);
+            node.sum = left.sum + right.sum;
+            node.min = Math.min(left.min, right.min);
+            node.max = Math.max(left.max, right.max);
         }
         return node;
     }
 
-    static int inclusiveRangeSum(TreeNode node, int startIndex, int endIndex) {
-        int result = 0;
-        if (startIndex == node.leftBound && endIndex == node.rightBound)
-            result = node.summation;
+    static int rangeSum(Node node, int l, int r) {
+        int res = 0;
+        if (l == node.lb && r == node.rb)
+            res = node.sum;
         else {
-            int treeMid = node.leftBound + (node.rightBound - node.leftBound) / 2;
-            if (endIndex <= treeMid) {
-                result= inclusiveRangeSum(node.left, startIndex, endIndex);
-            } else if (treeMid < startIndex) {
-                result= inclusiveRangeSum(node.right, startIndex, endIndex);
+            int mid = node.lb + (node.rb - node.lb) / 2;
+            if (r <= mid) {
+                res = rangeSum(node.left, l, r);
+            } else if (mid < l) {
+                res = rangeSum(node.right, l, r);
             } else {
-                result=inclusiveRangeSum(node.left, startIndex, treeMid)+inclusiveRangeSum(node.right, treeMid+1, endIndex)
+                res = rangeSum(node.left, l, mid) + rangeSum(node.right, mid + 1, r);
             }
         }
-        return result;
+        return res;
     }
 
-    static int[] inclusiveRangeExtremum(TreeNode node, int startIndex, int endIndex) {
-        int[] result = new int[2];
-        if (startIndex == node.leftBound && endIndex == node.rightBound) {
-            result[0] = node.smallest;
-            result[1] = node.largest;
+    static int[] rangeExtremum(Node node, int l, int r) {
+        int[] res = new int[2];
+        if (l == node.lb && r == node.rb) {
+            res[0] = node.min;
+            res[1] = node.max;
         } else {
-            int treeMid = node.leftBound + (node.rightBound - node.leftBound) / 2;
-            if (treeMid >= endIndex) {
-                result = inclusiveRangeExtremum(node.left, startIndex, treeMid);
-            } else if (treeMid < startIndex) {
-                result = inclusiveRangeExtremum(node.right, treeMid + 1, endIndex);
+            int mid = node.lb + (node.rb - node.lb) / 2;
+            if (mid >= r) {
+                res = rangeExtremum(node.left, l, r);
+            } else if (mid < l) {
+                res = rangeExtremum(node.right, l, r);
             } else {
-                int[] leftResult = inclusiveRangeExtremum(node.left, startIndex, treeMid),
-                        rightResult = inclusiveRangeExtremum(node.right, treeMid + 1, endIndex);
-                result[0] = Math.min(leftResult[0], rightResult[0]);
-                result[1] = Math.max(leftResult[1], rightResult[1]);
+                int[] leftRes = rangeExtremum(node.left, l, mid);
+                int[] rightRes = rangeExtremum(node.right, mid + 1, r);
+                res[0] = Math.min(leftRes[0], rightRes[0]);
+                res[1] = Math.max(leftRes[1], rightRes[1]);
             }
         }
-        return result;
+        return res;
     }
 
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
-        len = sc.nextInt();
-        int queries = sc.nextInt();
-        nums = new int[len];
-        for (int idx = 0; idx < len; idx++)
-            nums[idx] = sc.nextInt();
-        tree = populateTree(0, len - 1);
-        // populatetree2();
-        printTree(tree);
-        int result;
-        while (queries-- > 0) {
-            int option = sc.nextInt();
-            switch (option) {
+        n = sc.nextInt();
+        int q = sc.nextInt();
+        arr = new int[n];
+        for (int i = 0; i < n; i++)
+            arr[i] = sc.nextInt();
+        root = build(0, n - 1);
+        print(root);
+        int res;
+        while (q-- > 0) {
+            int opt = sc.nextInt();
+            switch (opt) {
                 case 1:
-                    int leftBound = sc.nextInt();
-                    int rightBound = sc.nextInt();
-                    result = inclusiveRangeSum(tree, leftBound, rightBound);
-                    System.out.println(result);
+                    int l = sc.nextInt();
+                    int r = sc.nextInt();
+                    res = rangeSum(root, l, r);
+                    System.out.println(res);
                     break;
                 case 2:
-                    int index = sc.nextInt();
-                    int newValue = sc.nextInt();
-                    replace(index, newValue);
+                    int idx = sc.nextInt();
+                    int val = sc.nextInt();
+                    replace(idx, val);
                     break;
                 default:
                     System.out.println("Invalid option.");

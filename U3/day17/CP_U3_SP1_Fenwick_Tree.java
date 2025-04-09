@@ -73,9 +73,6 @@ public class CP_U3_SP1_Fenwick_Tree {
     }
 
     static void populateBit2() {
-        // for (int idx = 0; idx < len; idx++) {
-        // bit[idx] = nums[idx];
-        // }
         bit = Arrays.copyOf(nums, len);
 
         for (int idx = 1; idx <= len; idx++) {
@@ -95,6 +92,7 @@ public class CP_U3_SP1_Fenwick_Tree {
 
     static int inclusiveRangeSum(int start, int end) {
         return sum(end) - sum(start - 1);
+        //because start must be included in our result
     }
 
     static int sum(int index) {
