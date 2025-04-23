@@ -174,6 +174,26 @@ public class AP3_DistinctMaxOfSubarraysOfSizeK {
         }
     }
 
+    static long maximumSubarraySum(int[] nums, int k) {
+        int n = nums.length;
+        long[] prefixSum = new long[n + 1];
+        int max = 0;
+        for (int i = 1; i <= n; i++) {
+            max = Math.max(max, nums[i - 1]);
+            prefixSum[i] = nums[i - 1] + prefixSum[i - 1];
+        }
+        int[] index = new int[max + 1];
+        long maxSum = 0;
+        for (int e = 1, s = 0; e <= nums.length; e++) {
+            s = Math.max(s, Math.max(e - k, index[nums[e - 1]]));
+            if (e - s == k) {
+                maxSum = Math.max(maxSum, prefixSum[e] - prefixSum[s]);
+            }
+            index[nums[e - 1]] = e;
+        }
+        return maxSum;
+    }
+
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         len = sc.nextInt();
