@@ -6,8 +6,6 @@ such that every prefix of it is also in words.
 For example, let words = ["a", "app", "ap","appl", "apply"]. 
 The string "apply" has prefixes "ap","app","appl" and "a", all of which are in words.
 
-Your task is the find and return the longest string in words as described above.
-
 If there is more than one string with the same length, return the lexicographically
 smallest one, and if no string exists, return "".
 
@@ -58,7 +56,7 @@ Sample Output-3:
 
 import java.util.*;
 
-public class Node {
+class Node {
     public Node[] children;
     public boolean end;
 
@@ -83,12 +81,6 @@ public class CP_U3_SP5_Longest_Word {
         cur.end = true;
     }
 
-    // static String solution(){
-    // result="";
-    // dfs(new StringBuilder());
-    // return result;
-    // }
-
     static void dfs(Node node, StringBuilder currentWord) {
         // if current node is not end of a word, stop exploring
         if (!node.end && currentWord.length() > 0)
@@ -99,6 +91,16 @@ public class CP_U3_SP5_Longest_Word {
         if (candidate.length() > result.length()
                 || (candidate.length() == result.length() && candidate.compareTo(result) < 0)) {
             result = candidate;
+        }
+
+        //recursively explore all children
+        for(int i=0;i<26;i++){
+            if(node.children[i]!=null){
+                currentWord.append((char)('a'+i));//add the character to current word
+                dfs(node.children[i],currentWord);//recur for child node
+                currentWord.deleteCharAt(currentWord.length()-1);
+                //backtract for the loop to continue correctly
+            }
         }
 
     }

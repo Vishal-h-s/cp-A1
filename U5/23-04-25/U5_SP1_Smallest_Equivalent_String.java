@@ -90,7 +90,7 @@ class DisjointUnionSet {
     }
 }
 
-class test {
+class U5_SP1_Smallest_Equivalent_String {
     static String stringify(int node) {
         return Integer.toString(node);
     }

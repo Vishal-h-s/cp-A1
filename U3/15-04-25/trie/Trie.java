@@ -98,22 +98,36 @@ public class Trie {
         }
     }
 
-    @Override
-    public String toString() {
-        StringBuilder string = new StringBuilder();
-        print(this, string);
-        return string.toString();
-    }
+    // @Override
+    // public String toString() {
+    //     StringBuilder string = new StringBuilder();
+    //     print(this, string);
+    //     return string.toString();
+    // }
 
-    public void print(Trie node, StringBuilder string) {
-        for (int idx = 0; idx < 26; idx++) {
-            if (node.children[idx] != null) {
-                int wordCountnde = children[idx].wordCount;
-                if (wordCount > 0) {
-                    System.out.println();
-                }
+    // public void print(Trie node, StringBuilder string) {
+    //     for (int idx = 0; idx < 26; idx++) {
+    //         if (node.children[idx] != null) {
+    //             int wordCount = children[idx].wordCount;
+    //             if (wordCount > 0) {
+    //                 System.out.println();
+    //             }
+    //         }
+    //     }
+
+    // }
+
+    public void print(Trie node, String prefix) {
+    for (int idx = 0; idx < 26; idx++) {
+        if (node.children != null && node.children[idx] != null) {
+            char letter = (char) ('a' + idx);
+            int wordCount = node.children[idx].wordCount;
+            if (wordCount > 0) {
+                // Print the prefix and word count
+                System.out.println(prefix + letter + ": " + wordCount);
             }
+            // Recursively print the children
+            print(node.children[idx], prefix + letter);
         }
-
     }
 }

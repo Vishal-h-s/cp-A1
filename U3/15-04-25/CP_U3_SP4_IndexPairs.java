@@ -1,7 +1,5 @@
 /*
- * An 8th standard student has been assigned a task as part of punishment for his mistake.
-
-The task is, there is an input string STR(without any space) and an array of 
+ * there is an input string STR(without any space) and an array of 
 strings words[]. Print all the pairs of indices [s, e] where s, e are starting 
 index and ending index of every string in words[] in the input string STR.
 
@@ -71,7 +69,7 @@ class Node {
     }
 }
 
-class CP_U3_SP4_IndexPairs {
+public class CP_U3_SP4_IndexPairs {
     static int len;
     static String[] words;
     static String text;
