@@ -43,13 +43,13 @@ public class Trie {
     public boolean search(String word) {
         Trie node = searchPrefix(word);
         // return node!=null && node.isEnd;
-        return node != null && node.wordCount > 0 ? true : false;
+        return node != null && node.wordCount > 0;
     }
 
     public boolean startsWith(String prefix) {
         Trie node = searchPrefix(prefix);
         // return node!=null;
-        return node != null && node.prefixCount > 0 ? true : false;
+        return node != null && node.prefixCount > 0 ;
     }
 
     public int wordCount(String word) {
@@ -98,36 +98,18 @@ public class Trie {
         }
     }
 
-    // @Override
-    // public String toString() {
-    //     StringBuilder string = new StringBuilder();
-    //     print(this, string);
-    //     return string.toString();
-    // }
-
-    // public void print(Trie node, StringBuilder string) {
-    //     for (int idx = 0; idx < 26; idx++) {
-    //         if (node.children[idx] != null) {
-    //             int wordCount = children[idx].wordCount;
-    //             if (wordCount > 0) {
-    //                 System.out.println();
-    //             }
-    //         }
-    //     }
-
-    // }
-
     public void print(Trie node, String prefix) {
-    for (int idx = 0; idx < 26; idx++) {
-        if (node.children != null && node.children[idx] != null) {
-            char letter = (char) ('a' + idx);
-            int wordCount = node.children[idx].wordCount;
-            if (wordCount > 0) {
-                // Print the prefix and word count
-                System.out.println(prefix + letter + ": " + wordCount);
+        for (int idx = 0; idx < 26; idx++) {
+            if (node.children != null && node.children[idx] != null) {
+                char letter = (char) ('a' + idx);
+                int wordCount = node.children[idx].wordCount;
+                if (wordCount > 0) {
+                    // Print the prefix and word count
+                    System.out.println(prefix + letter + ": " + wordCount);
+                }
+                // Recursively print the children
+                print(node.children[idx], prefix + letter);
             }
-            // Recursively print the children
-            print(node.children[idx], prefix + letter);
         }
     }
 }

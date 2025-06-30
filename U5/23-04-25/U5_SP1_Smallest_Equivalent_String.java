@@ -90,26 +90,24 @@ class DisjointUnionSet {
     }
 }
 
-class U5_SP1_Smallest_Equivalent_String {
-    static String stringify(int node) {
-        return Integer.toString(node);
-    }
+public class U5_SP1_Smallest_Equivalent_String {
 
     public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        StringBuilder result = new StringBuilder();
-        char[] str1 = sc.next().toCharArray(), str2 = sc.next().toCharArray(), str = sc.next().toCharArray();
+        try (Scanner sc = new Scanner(System.in)) {
+            StringBuilder result = new StringBuilder();
+            char[] str1 = sc.next().toCharArray(), str2 = sc.next().toCharArray(), str = sc.next().toCharArray();
 
-        DisjointUnionSet dus = new DisjointUnionSet(26);
-        for (int idx = 0; idx < str1.length; idx++) {
-            dus.union(str1[idx] - 'a', str2[idx] - 'a');
+            DisjointUnionSet dus = new DisjointUnionSet(26);
+            for (int idx = 0; idx < str1.length; idx++) {
+                dus.union(str1[idx] - 'a', str2[idx] - 'a');
+            }
+
+            for (char character : str) {
+                result.append((char) ('a' + dus.parent[character - 'a']));
+            }
+
+            System.out.println(result);
+            sc.close();
         }
-
-        for (char character : str) {
-            result.append((char) ('a' + dus.parent[character - 'a']));
-        }
-
-        System.out.println(result);
-        sc.close();
     }
 }
