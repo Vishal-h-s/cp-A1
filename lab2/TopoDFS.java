@@ -48,7 +48,7 @@ public class TopoDFS {
         try (Scanner sc = new Scanner(System.in)) {
 
             int v = sc.nextInt(), e = sc.nextInt();
-            int[][] edges = new int[v][2];
+            int[][] edges = new int[e][2];
             for (int i = 0; i < e; i++) {
                 edges[i][0] = sc.nextInt();
                 edges[i][1] = sc.nextInt();
