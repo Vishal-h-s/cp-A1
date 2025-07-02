@@ -1227,3 +1227,112 @@ public class LongestIncreasingPath {
     }
 }
 ```
+
+```java
+import java.util.*;
+
+public class DistinctIslandsUF {
+    private int[] parent;
+    private int N, M;
+
+    public int find(int i) {
+        while (parent[i] != i) {
+            i = parent[i];
+        }
+        return i;
+    }
+
+    public void union(int i, int j) {
+        int ri = find(i);
+        int rj = find(j);
+        if (ri != rj) {
+            parent[rj] = ri;
+        }
+    }
+
+    private boolean inside(int x, int y) {
+        return (x >= 0 && y >= 0 && x < N && y < M);
+    }
+
+    public int numDistinctIslands(int[][] grid) {
+        if (grid == null || grid.length == 0) return 0;
+        N = grid.length;
+        M = grid[0].length;
+        parent = new int[N * M];
+        List<int[]> ones = new ArrayList<>();
+
+        // Initialize parent array
+        for (int i = 0; i < N * M; i++) {
+            parent[i] = i;
+        }
+
+        // Union connected land cells
+        for (int i = 0; i < N; i++) {
+            for (int j = 0; j < M; j++) {
+                if (grid[i][j] != 0) {
+                    int idx = i * M + j;
+                    ones.add(new int[]{i, j});
+                    if (inside(i - 1, j) && grid[i - 1][j] != 0)
+                        union(idx, (i - 1) * M + j);
+                    if (inside(i, j - 1) && grid[i][j - 1] != 0)
+                        union(idx, i * M + (j - 1));
+                    if (inside(i + 1, j) && grid[i + 1][j] != 0)
+                        union(idx, (i + 1) * M + j);
+                    if (inside(i, j + 1) && grid[i][j + 1] != 0)
+                        union(idx, i * M + (j + 1));
+                }
+            }
+        }
+
+        // Group all land cells by their root
+        Map<Integer, List<int[]>> map = new HashMap<>();
+        for (int[] pos : ones) {
+            int x = pos[0], y = pos[1];
+            int root = find(x * M + y);
+            map.computeIfAbsent(root, k -> new ArrayList<>()).add(pos);
+        }
+
+        // Normalize and store unique island shapes
+        Set<String> uniqueShapes = new HashSet<>();
+        for (List<int[]> island : map.values()) {
+            List<int[]> norm = normalize(island);
+            String key = encode(norm);
+            uniqueShapes.add(key);
+        }
+
+        return uniqueShapes.size();
+    }
+
+    private List<int[]> normalize(List<int[]> island) {
+        island.sort(Comparator.<int[]>comparingInt(a -> a[0]).thenComparingInt(a -> a[1]));
+        int baseX = island.get(0)[0];
+        int baseY = island.get(0)[1];
+        List<int[]> norm = new ArrayList<>();
+        for (int[] cell : island) {
+            norm.add(new int[]{cell[0] - baseX, cell[1] - baseY});
+        }
+        norm.sort(Comparator.<int[]>comparingInt(a -> a[0]).thenComparingInt(a -> a[1]));
+        return norm;
+    }
+
+    private String encode(List<int[]> shape) {
+        StringBuilder sb = new StringBuilder();
+        for (int[] pos : shape) {
+            sb.append(pos[0]).append(",").append(pos[1]).append(";");
+        }
+        return sb.toString();
+    }
+
+    // Sample usage
+    public static void main(String[] args) {
+        DistinctIslandsUF obj = new DistinctIslandsUF();
+        int[][] grid = {
+            {1, 1, 0, 0, 0},
+            {1, 0, 0, 1, 1},
+            {0, 0, 0, 1, 0},
+            {1, 1, 0, 0, 0}
+        };
+        System.out.println("Distinct islands = " + obj.numDistinctIslands(grid));  // Output: 3
+    }
+}
+```
